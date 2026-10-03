@@ -27,4 +27,4 @@ Instead of requesting the LLM to rewrite the entire clustered text, the pipeline
 ## 3.5 Cross-Frame Postprocessing (`postprocessor.py`)
 Because inference occurs sequentially across bounded frames, the LLM naturally predicts *local* cluster integers relative to current context. To resolve document-level identities, we implement **Algorithm 1**, which iterates through consecutive frames containing textual overlap. A mapping dictionary coalesces predicted local cluster IDs against the anchored document space, producing *global* cluster assignments written back out in CoNLL format.
 
-Two limits of this step are measured rather than assumed (`Analysis_Section.md` §4.4): framing presents only 92.0% of gold mentions to the model, and chaining splits 6.0% of multi-mention clusters. Together they cap the pipeline at CoNLL-F 93.04 even with perfect predictions.
+Two limits of this step are measured rather than assumed (`Analysis_Section.md` §4.4): framing presents only 91.9% of gold mentions to the model, and chaining splits 4.7% of multi-mention clusters. Together they cap the pipeline at CoNLL-F 89.34 even with perfect predictions.

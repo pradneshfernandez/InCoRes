@@ -31,8 +31,8 @@ This draft reports the parts of that system that can be established without a
 GPU: corpus statistics, three model-free baselines on the full test split, and
 — the contribution we would emphasise — a **measured ceiling on the pipeline
 itself**. Replaying gold cluster numbers through framing, merging and scoring
-yields CoNLL-F 93.04, not 100: the framing step drops 8.0% of gold mentions,
-and frame chaining splits 6.0% of multi-mention clusters. Any system score must
+yields CoNLL-F 89.34, not 100: the framing step drops 8.1% of gold mentions,
+and frame chaining splits 4.7% of multi-mention clusters. Any system score must
 be read against that ceiling rather than against 100, and against an MFE
 surface-matching baseline that already reaches CoNLL-F 53.34.
 
@@ -286,19 +286,19 @@ pipeline given perfect predictions should approach 100. It does not:
 
 | Metric | P | R | F |
 |---|---:|---:|---:|
-| MUC | 100.00 | 88.46 | 93.87 |
-| B³ | 100.00 | 86.07 | 92.51 |
-| CEAFe | 91.84 | 93.67 | 92.74 |
-| **CoNLL** | 97.28 | 89.40 | **93.04** |
+| MUC | 100.00 | 80.64 | 89.28 |
+| B³ | 100.00 | 79.41 | 88.52 |
+| CEAFe | 92.30 | 88.20 | 90.21 |
+| **CoNLL** | 97.43 | 82.75 | **89.34** |
 
 Two structural losses account for the gap, both inherent to the formulation
 rather than to our implementation of it:
 
-1. **Mention coverage 92.0%** (61,783 / 67,130). The framing step keeps only
-   the outermost mention of a nested group, so 8.0% of gold mentions are never
+1. **Mention coverage 91.9%** (56,782 / 61,771). The framing step keeps only
+   the outermost mention of a nested group, so 8.1% of gold mentions are never
    presented to the model and can never be predicted. Precision is unaffected
    (100.00 for MUC and B³); the entire loss is recall.
-2. **Frame chaining splits 6.0% of multi-mention clusters** (746 / 12,422).
+2. **Frame chaining splits 4.7% of multi-mention clusters** (576 / 12,225).
    Algorithm 1 can only relate mentions that co-occur in some frame pair, so an
    entity that disappears for longer than a frame and returns is split into two
    clusters.
@@ -307,7 +307,7 @@ A third quantity, mislinked pairs within a shared frame, must be exactly 0 —
 that is the correctness invariant for Algorithm 1, and it holds.
 
 **We would stress this as the most useful result available before training.**
-A system reported at, say, CoNLL-F 70 in this framework has captured 75% of
+A system reported at, say, CoNLL-F 70 in this framework has captured 78% of
 what the framing permits, not 70% of what is achievable. Reporting against 100
 understates such a system, and — more importantly — misattributes framing loss
 to the model.
@@ -328,7 +328,7 @@ numbers:
 
 - Scores come from `inference_output/results.json`, written by
   `scripts/run_inference.py`; per-document clusterings are retained.
-- The comparison points are **MFE at 53.34** and **the ceiling at 93.04**, both
+- The comparison points are **MFE at 53.34** and **the ceiling at 89.34**, both
   in the same table.
 - The scorer caveat of Section 5.4 is restated wherever the numbers appear.
 - Any comparison with published CorefInst/CorefUD figures requires the official
@@ -342,7 +342,7 @@ forward passes.
 
 ### 7.1 What the ceiling implies for the method
 
-The 8.0% mention-coverage loss is a design property of frame-based masking, not
+The 8.1% mention-coverage loss is a design property of frame-based masking, not
 a bug: nested mentions cannot both be wrapped as the outermost `<m>` span. A
 system that needs those mentions — and 8% is a large fraction of the headroom
 between MFE and a strong result — would need a different marking scheme. This

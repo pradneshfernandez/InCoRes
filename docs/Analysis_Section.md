@@ -61,7 +61,7 @@ Commitments:
 
 - Numbers come from `inference_output/results.json` (written by
   `scripts/run_inference.py`), with per-document clusterings retained.
-- **MFE (53.34)** and **the ceiling (93.04)** appear in the same table as the
+- **MFE (53.34)** and **the ceiling (89.34)** appear in the same table as the
   system score, always.
 - The scorer caveat of Section 4.1 is restated wherever the numbers appear.
 - No comparison against published CorefInst/CorefUD figures without re-scoring
@@ -74,17 +74,17 @@ what the pipeline could achieve with a perfect model. It does not reach 100:
 
 | Metric | P | R | F |
 |---|---:|---:|---:|
-| MUC | 100.00 | 88.46 | 93.87 |
-| B³ | 100.00 | 86.07 | 92.51 |
-| CEAFe | 91.84 | 93.67 | 92.74 |
-| **CoNLL** | 97.28 | 89.40 | **93.04** |
+| MUC | 100.00 | 80.64 | 89.28 |
+| B³ | 100.00 | 79.41 | 88.52 |
+| CEAFe | 92.30 | 88.20 | 90.21 |
+| **CoNLL** | 97.43 | 82.75 | **89.34** |
 
 Measured over 1,115 test documents. Two structural losses explain the gap:
 
-1. **Mention coverage 92.0%** (61,783 / 67,130). Framing keeps only the
-   outermost mention of a nested group, so 8.0% of gold mentions are never
+1. **Mention coverage 91.9%** (56,782 / 61,771). Framing keeps only the
+   outermost mention of a nested group, so 8.1% of gold mentions are never
    shown to the model. Precision is untouched — the whole loss is recall.
-2. **Frame chaining splits 6.0% of multi-mention clusters** (746 / 12,422).
+2. **Frame chaining splits 4.7% of multi-mention clusters** (576 / 12,225).
    Algorithm 1 links only through shared frames, so an entity absent for longer
    than one frame and then reappearing becomes two clusters.
 
@@ -92,7 +92,7 @@ A third quantity — mislinked pairs among mentions sharing a frame — is the
 correctness invariant for Algorithm 1 and must be exactly 0. It is (see 4.6).
 
 **Why this matters for interpretation.** A system scoring CoNLL-F 70 here has
-captured roughly 75% of what the framing permits, not 70% of what is
+captured roughly 78% of what the framing permits, not 70% of what is
 achievable. Scoring against 100 charges framing loss to the model.
 
 ## 4.5 Zero mentions: implemented, but absent from this corpus

@@ -14,7 +14,7 @@ end to end on CPU; no GPU run has taken place, so there are no system results.
 | Pipeline | Complete — 40 unit tests, full-corpus CPU validation passing |
 | Data | Prepared: 13,761 / 1,758 / 2,006 train/dev/test frame examples |
 | Baselines | Measured on the full test split — MFE **CoNLL-F 53.34** |
-| Pipeline ceiling | Measured — **CoNLL-F 93.04** with perfect predictions |
+| Pipeline ceiling | Measured — **CoNLL-F 89.34** with perfect predictions |
 | Fine-tuned model | **Not run** |
 
 Read `docs/Paper_Draft.md` for the measured numbers, the protocol fixed for the
@@ -212,8 +212,10 @@ in subword tokens for Indic scripts. Overshoot is right-truncated, which cuts
 off the training target. Keep `max_tokens_per_frame ≈ max_seq_length / 16` and
 verify with `python scripts/run_local.py prepare --config <cfg>`.
 
-Smaller frames also fragment more clusters: on a 6-doc sample, a 256-token frame
-splits 0% of multi-mention clusters, a 64-token frame splits ~31%. **Prefer L4 or
+Smaller frames also fragment more clusters, which lowers the ceiling a perfect
+model could reach. Measured on the full test split with gold predictions, the
+CoNLL-F ceiling is 89.34 at 256-token frames, 78.46 at 128 and 57.80 at 64.
+**Prefer L4 or
 A100 for the real run** — the T4 preset fits in 16 GB but pays for it in accuracy,
 and its ~58k examples make 3 epochs too long for a free-tier session.
 
