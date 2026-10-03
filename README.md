@@ -6,8 +6,6 @@ Implementation of **CorefInst** (TACL 2026) for Hindi, Tamil, and Bengali using 
 
 ## Project status
 
-**The model has not been trained yet.** The pipeline is complete and validated
-end to end on CPU; no GPU run has taken place, so there are no system results.
 
 | | |
 |---|---|
